@@ -1,7 +1,7 @@
 require 'time'
 require 'set'
 require 'rack/response'
-require 'rack/utils'
+require 'rack/headers'
 require 'rack/cache/cache_control'
 
 module Rack::Cache
@@ -31,7 +31,7 @@ module Rack::Cache
     # and body.
     def initialize(status, headers, body)
       @status = status.to_i
-      @headers = Rack::Utils::HeaderHash.new(headers)
+      @headers = Rack::Headers.new(headers)
       @body = body
       @now = Time.now
       @headers['date'] ||= @now.httpdate
