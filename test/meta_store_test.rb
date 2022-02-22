@@ -28,7 +28,7 @@ module RackCacheMetaStoreImplementation
       # for the request.
       def store_simple_entry(path=nil, headers=nil, body=['test'])
         @request = mock_request(path || '/test', headers || {})
-        @response = mock_response(200, {'Cache-Control' => 'max-age=420'}, body)
+        @response = mock_response(200, {'cache-control' => 'max-age=420'}, body)
         body = @response.body
         cache_key = @store.store(@request, @response, @entity_store)
 
@@ -134,7 +134,7 @@ module RackCacheMetaStoreImplementation
         store_simple_entry nil, nil, io
 
         # was stored correctly in entity store
-        key = @response.headers.fetch('X-Content-Digest')
+        key = @response.headers.fetch('x-content-digest')
         @entity_store.read(key).must_equal "TEST"
 
         # io is closed, so that file descriptors are released
@@ -144,10 +144,10 @@ module RackCacheMetaStoreImplementation
         @response.body.to_a.must_equal ["TEST"]
       end
 
-      it 'sets the X-Content-Digest response header before storing' do
+      it 'sets the x-content-digest response header before storing' do
         cache_key = store_simple_entry
         req, res = @store.read(cache_key).first
-        res['X-Content-Digest'].must_equal 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'
+        res['x-content-digest'].must_equal 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'
       end
 
       it 'finds a stored entry with #lookup' do
@@ -174,14 +174,14 @@ module RackCacheMetaStoreImplementation
 
       it 'does not find an entry with #lookup when the body does not exist' do
         store_simple_entry
-        refute @response.headers['X-Content-Digest'].nil?
-        @entity_store.purge(@response.headers['X-Content-Digest'])
+        refute @response.headers['x-content-digest'].nil?
+        @entity_store.purge(@response.headers['x-content-digest'])
         @store.lookup(@request, @entity_store).must_be_nil
       end
 
       it 'purges meta store entry when the body does not exist' do
         store_simple_entry
-        @entity_store.purge(@response.headers['X-Content-Digest'])
+        @entity_store.purge(@response.headers['x-content-digest'])
         mock = MiniTest::Mock.new
         mock.expect :call, nil, [@store.cache_key(@request)]
         @store.stub(:purge, mock) do
@@ -192,8 +192,8 @@ module RackCacheMetaStoreImplementation
 
       it 'warns once if purge is not implemented' do
         store_simple_entry
-        assert @response.headers['X-Content-Digest']
-        @entity_store.purge(@response.headers['X-Content-Digest'])
+        assert @response.headers['x-content-digest']
+        @entity_store.purge(@response.headers['x-content-digest'])
         def @store.purge(key); raise NotImplementedError; end
         @store.lookup(@request, @entity_store).must_be_nil
         @store.lookup(@request, @entity_store).must_be_nil
@@ -203,7 +203,7 @@ module RackCacheMetaStoreImplementation
         store_simple_entry
         response = @store.lookup(@request, @entity_store)
         response.headers.
-          must_equal @response.headers.merge('Content-Length' => '4')
+          must_equal @response.headers.merge('content-length' => '4')
       end
 
       it 'restores response body from entity store with #lookup' do
@@ -305,7 +305,7 @@ module RackCacheMetaStoreImplementation
         it 'removes the Age response header before storing' do
           response = mock_response(200, {age => "100"}, ['foo'])
           @store.store(@request, response, @entity_store)
-          @store.lookup(@request, @entity_store).headers['Age'].must_be_nil
+          @store.lookup(@request, @entity_store).headers['age'].must_be_nil
         end
       end
 
@@ -314,7 +314,7 @@ module RackCacheMetaStoreImplementation
       context 'logging writes' do
         it 'passes a TTL to the stores is use_native_ttl is truthy' do
           request = mock_request('/test', { 'rack-cache.use_native_ttl' => true })
-          response = mock_response(200, {'Cache-Control' => 'max-age=42'}, ['foo'])
+          response = mock_response(200, {'cache-control' => 'max-age=42'}, ['foo'])
 
           @entity_store.expects(:write).with(['foo'], 42).returns ['foobar']
           @store.expects(:write).with(anything, anything, 42).returns ['foobar']

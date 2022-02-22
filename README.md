@@ -2,15 +2,15 @@ Rack::Cache
 ===========
 
 Rack::Cache is suitable as a quick drop-in component to enable HTTP caching for
-Rack-based applications that produce freshness (Expires, Cache-Control) and/or
-validation (Last-Modified, ETag) information:
+Rack-based applications that produce freshness (`expires`, `cache-control`)
+and/or validation (`last-modified`, `etag`) information:
 
   * Standards-based (RFC 2616)
   * Freshness/expiration based caching
-  * Validation (If-Modified-Since / If-None-Match)
-  * Vary support
-  * Cache-Control: public, private, max-age, s-maxage, must-revalidate,
-    and proxy-revalidate.
+  * Validation (`if-modified-since` / `if-none-match`)
+  * `vary` support
+  * `cache-control` `public`, `private`, `max-age`, `s-maxage`, `must-revalidate`,
+    and `proxy-revalidate`.
   * Portable: 100% Ruby / works with any Rack-enabled framework
   * Disk, memcached, and heap memory storage backends
 
@@ -95,7 +95,7 @@ Noop entity store
 
 Does not persist response bodies (no disk/memory used).<br/>
 Responses from the cache will have an empty body.<br/>
-Clients must ignore these empty cached response (check for X-Rack-Cache response header).<br/>
+Clients must ignore these empty cached response (check for `x-rack-cache` response header).<br/>
 Atm cannot handle streamed responses, patch needed.
 
 ```Ruby

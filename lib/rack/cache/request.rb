@@ -18,12 +18,12 @@ module Rack::Cache
       @env['REQUEST_METHOD']
     end
 
-    # A CacheControl instance based on the request's Cache-Control header.
+    # A CacheControl instance based on the request's cache-control header.
     def cache_control
       @cache_control ||= CacheControl.new(env['HTTP_CACHE_CONTROL'])
     end
 
-    # True when the Cache-Control/no-cache directive is present or the
+    # True when the cache-control/no-cache directive is present or the
     # Pragma header is set to no-cache.
     def no_cache?
       cache_control['no-cache'] ||

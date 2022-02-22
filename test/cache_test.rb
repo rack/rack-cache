@@ -3,7 +3,7 @@ require_relative 'test_helper'
 describe Rack::Cache do
   def dumb_app(_env)
     body = block_given? ? [yield] : ['Hi']
-    [ 200, {'Content-Type' => 'text/plain'}, body ]
+    [ 200, {'content-type' => 'text/plain'}, body ]
   end
 
   before { @app = method(:dumb_app) }

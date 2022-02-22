@@ -72,7 +72,7 @@ module Rack::Cache
 
     # The number of seconds that a cache entry should be considered
     # "fresh" when no explicit freshness information is provided in
-    # a response. Explicit Cache-Control or Expires headers
+    # a response. Explicit cache-control or expires headers
     # override this value.
     #
     # Default: 0
@@ -83,12 +83,12 @@ module Rack::Cache
     # example, in most cases, it makes sense to prevent cookies from being
     # stored in the cache.
     #
-    # Default: ['Set-Cookie']
+    # Default: ['set-cookie']
     option_accessor :ignore_headers
 
     # Set of request headers that trigger "private" cache-control behavior
     # on responses that don't explicitly state whether the response is
-    # public or private via a Cache-Control directive. Applications that use
+    # public or private via a cache-control directive. Applications that use
     # cookies for authorization may need to add the 'Cookie' header to this
     # list.
     #
@@ -96,11 +96,11 @@ module Rack::Cache
     option_accessor :private_headers
 
     # Specifies whether a client can force cache reload by including a
-    # Cache-Control "no-cache" directive in the request. Disabled by default.
+    # cache-control "no-cache" directive in the request. Disabled by default.
     option_accessor :allow_reload
 
     # Specifies whether a client can force cache revalidate by including a
-    # Cache-Control "max-age=0" directive in the request. Disabled by default.
+    # cache-control "max-age=0" directive in the request. Disabled by default.
     option_accessor :allow_revalidate
 
     # Specifies whether the underlying entity store's native expiration should
@@ -148,7 +148,7 @@ module Rack::Cache
         'rack-cache.metastore'        => 'heap:/',
         'rack-cache.entitystore'      => 'heap:/',
         'rack-cache.default_ttl'      => 0,
-        'rack-cache.ignore_headers'   => ['Set-Cookie'],
+        'rack-cache.ignore_headers'   => ['set-cookie'],
         'rack-cache.private_headers'  => ['Authorization', 'Cookie'],
         'rack-cache.allow_reload'     => false,
         'rack-cache.allow_revalidate' => false,

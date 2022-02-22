@@ -1,11 +1,11 @@
 __Rack::Cache__ is suitable as a quick drop-in component to enable HTTP caching
-for [Rack][]-based applications that produce freshness (`Expires`,
-`Cache-Control`) and/or validation (`Last-Modified`, `ETag`) information.
+for [Rack][]-based applications that produce freshness (`expires`,
+`cache-control`) and/or validation (`last-modified`, `etag`) information.
 
   * Standards-based (see [RFC 2616][rfc] / [Section 13][s13]).
   * Freshness/expiration based caching
   * Validation
-  * Vary support
+  * `vary` support
   * Portable: 100% Ruby / works with any [Rack][]-enabled framework.
   * Disk, memcached, and heap memory [storage backends][storage].
 

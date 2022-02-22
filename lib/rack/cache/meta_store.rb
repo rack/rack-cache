@@ -34,11 +34,11 @@ module Rack::Cache
 
       # find a cached entry that matches the request.
       env = request.env
-      match = entries.detect{ |req,res| requests_match?((res['Vary'] || res['vary']), env, req) }
+      match = entries.detect{ |req,res| requests_match?((res['vary'] || res['vary']), env, req) }
       return nil if match.nil?
 
       _, res = match
-      if body = entity_store.open(res['X-Content-Digest'])
+      if body = entity_store.open(res['x-content-digest'])
         restore_response(res, body)
       else
         # the metastore referenced an entity that doesn't exist in
@@ -64,14 +64,14 @@ module Rack::Cache
 
       # write the response body to the entity store if this is the
       # original response.
-      if response.headers['X-Content-Digest'].nil?
+      if response.headers['x-content-digest'].nil?
         if request.env['rack-cache.use_native_ttl'] && response.fresh?
           digest, size = entity_store.write(response.body, response.ttl)
         else
           digest, size = entity_store.write(response.body)
         end
-        response.headers['X-Content-Digest'] = digest
-        response.headers['Content-Length'] = size.to_s unless response.headers['Transfer-Encoding']
+        response.headers['x-content-digest'] = digest
+        response.headers['content-length'] = size.to_s unless response.headers['Transfer-Encoding']
 
         # If the entitystore backend is a Noop, do not try to read the body from the backend, it always returns an empty array
         unless entity_store.is_a? Rack::Cache::EntityStore::Noop
@@ -91,12 +91,12 @@ module Rack::Cache
       vary = response.vary
       entries =
         read(key).reject do |env, res|
-          (vary == (res['Vary'] || res['vary'])) &&
+          (vary == (res['vary'] || res['vary'])) &&
             requests_match?(vary, env, stored_env)
         end
 
       headers = persist_response(response)
-      headers.delete('Age')
+      headers.delete('age')
       headers.delete('age')
 
       entries.unshift [stored_env, headers]
@@ -146,13 +146,13 @@ module Rack::Cache
     # Converts a stored response hash into a Response object. The caller
     # is responsible for loading and passing the body if needed.
     def restore_response(hash, body=[])
-      status = hash.delete('X-Status').to_i
+      status = hash.delete('x-status').to_i
       Rack::Cache::Response.new(status, hash, body)
     end
 
     def persist_response(response)
-      hash = response.headers.to_hash
-      hash['X-Status'] = response.status.to_s
+      hash = response.headers.dup
+      hash['x-status'] = response.status.to_s
       hash
     end
 

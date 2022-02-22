@@ -1,7 +1,7 @@
 module Rack
   module Cache
 
-    # Parses a Cache-Control header and exposes the directives as a Hash.
+    # Parses a cache-control header and exposes the directives as a Hash.
     # Directives that do not have values are set to +true+.
     class CacheControl < Hash
       def initialize(value=nil)
@@ -80,7 +80,7 @@ module Rack
       end
 
       # The expiration time of an entity MAY be specified by the origin
-      # server using the Expires header (see section 14.21). Alternatively,
+      # server using the expires header (see section 14.21). Alternatively,
       # it MAY be specified using the max-age directive in a response. When
       # the max-age cache-control directive is present in a cached response,
       # the response is stale if its current age is greater than the age
@@ -89,19 +89,19 @@ module Rack
       # response is cacheable (i.e., "public") unless some other, more
       # restrictive cache directive is also present.
       #
-      # If a response includes both an Expires header and a max-age
-      # directive, the max-age directive overrides the Expires header, even
-      # if the Expires header is more restrictive. This rule allows an origin
+      # If a response includes both an expires header and a max-age
+      # directive, the max-age directive overrides the expires header, even
+      # if the expires header is more restrictive. This rule allows an origin
       # server to provide, for a given response, a longer expiration time to
       # an HTTP/1.1 (or later) cache than to an HTTP/1.0 cache. This might be
       # useful if certain HTTP/1.0 caches improperly calculate ages or
       # expiration times, perhaps due to desynchronized clocks.
       #
-      # Many HTTP/1.0 cache implementations will treat an Expires value that
+      # Many HTTP/1.0 cache implementations will treat an expires value that
       # is less than or equal to the response Date value as being equivalent
-      # to the Cache-Control response directive "no-cache". If an HTTP/1.1
+      # to the cache-control response directive "no-cache". If an HTTP/1.1
       # cache receives such a response, and the response does not include a
-      # Cache-Control header field, it SHOULD consider the response to be
+      # cache-control header field, it SHOULD consider the response to be
       # non-cacheable in order to retain compatibility with HTTP/1.0 servers.
       #
       # When the max-age directive is included in the request, it indicates
@@ -114,7 +114,7 @@ module Rack
       # If a response includes an s-maxage directive, then for a shared
       # cache (but not for a private cache), the maximum age specified by
       # this directive overrides the maximum age specified by either the
-      # max-age directive or the Expires header. The s-maxage directive
+      # max-age directive or the expires header. The s-maxage directive
       # also implies the semantics of the proxy-revalidate directive. i.e.,
       # that the shared cache must not use the entry after it becomes stale
       # to respond to a subsequent request without first revalidating it with
@@ -128,7 +128,7 @@ module Rack
       # If a response includes a r-maxage directive, then for a reverse cache
       # (but not for a private or proxy cache), the maximum age specified by
       # this directive overrides the maximum age specified by either the max-age
-      # directive, the s-maxage directive, or the Expires header. The r-maxage
+      # directive, the s-maxage directive, or the expires header. The r-maxage
       # directive also implies the semantics of the proxy-revalidate directive.
       # i.e., that the reverse cache must not use the entry after it becomes
       # stale to respond to a subsequent request without first revalidating it
@@ -148,7 +148,7 @@ module Rack
       # MUST NOT use the entry after it becomes stale to respond to a
       # subsequent request without first revalidating it with the origin
       # server. (I.e., the cache MUST do an end-to-end revalidation every
-      # time, if, based solely on the origin server's Expires or max-age
+      # time, if, based solely on the origin server's expires or max-age
       # value, the cached response is stale.)
       #
       # The must-revalidate directive is necessary to support reliable

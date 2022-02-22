@@ -34,7 +34,7 @@ module Rack::Cache
       @headers = Rack::Utils::HeaderHash.new(headers)
       @body = body
       @now = Time.now
-      @headers['Date'] ||= @now.httpdate
+      @headers['date'] ||= @now.httpdate
     end
 
     def initialize_copy(other)
@@ -62,15 +62,15 @@ module Rack::Cache
       410  # Gone
     ].to_set
 
-    # A Hash of name=value pairs that correspond to the Cache-Control header.
+    # A Hash of name=value pairs that correspond to the cache-control header.
     # Valueless parameters (e.g., must-revalidate, no-store) have a Hash value
-    # of true. This method always returns a Hash, empty if no Cache-Control
+    # of true. This method always returns a Hash, empty if no cache-control
     # header is present.
     def cache_control
-      @cache_control ||= CacheControl.new(headers['Cache-Control'])
+      @cache_control ||= CacheControl.new(headers['cache-control'])
     end
 
-    # Set the Cache-Control header to the values specified by the Hash. See
+    # Set the cache-control header to the values specified by the Hash. See
     # the #cache_control method for information on expected Hash structure.
     def cache_control=(value)
       if value.respond_to? :to_hash
@@ -80,26 +80,26 @@ module Rack::Cache
       end
 
       if value.nil? || value.empty?
-        headers.delete('Cache-Control')
+        headers.delete('cache-control')
       else
-        headers['Cache-Control'] = value
+        headers['cache-control'] = value
       end
     end
 
     # Determine if the response is "fresh". Fresh responses may be served from
     # cache without any interaction with the origin. A response is considered
-    # fresh when it includes a Cache-Control/max-age indicator or Expiration
+    # fresh when it includes a cache-control/max-age indicator or Expiration
     # header and the calculated age is less than the freshness lifetime.
     def fresh?
       ttl && ttl > 0
     end
 
     # Determine if the response is worth caching under any circumstance. Responses
-    # marked "private" with an explicit Cache-Control directive are considered
+    # marked "private" with an explicit cache-control directive are considered
     # uncacheable
     #
-    # Responses with neither a freshness lifetime (Expires, max-age) nor cache
-    # validator (Last-Modified, ETag) are considered uncacheable.
+    # Responses with neither a freshness lifetime (expires, max-age) nor cache
+    # validator (last-modified, etag) are considered uncacheable.
     def cacheable?
       return false unless CACHEABLE_RESPONSE_CODES.include?(status)
       return false if cache_control.no_store? || cache_control.private?
@@ -109,7 +109,7 @@ module Rack::Cache
     # Determine if the response includes headers that can be used to validate
     # the response with the origin using a conditional GET request.
     def validateable?
-      headers.key?('Last-Modified') || headers.key?('ETag')
+      headers.key?('last-modified') || headers.key?('etag')
     end
 
     # Mark the response "private", making it ineligible for serving other
@@ -131,26 +131,26 @@ module Rack::Cache
     # Mark the response stale by setting the Age header to be equal to the
     # maximum age of the response.
     def expire!
-      headers['Age'] = max_age.to_s if fresh?
+      headers['age'] = max_age.to_s if fresh?
     end
 
     # The date, as specified by the Date header. When no Date header is present
     # or is unparseable, set the Date header to Time.now and return.
     def date
-      if date = headers['Date']
+      if date = headers['date']
         Time.httpdate(date)
       else
-        headers['Date'] = now.httpdate unless headers.frozen?
+        headers['date'] = now.httpdate unless headers.frozen?
         now
       end
     rescue ArgumentError
-      headers['Date'] = now.httpdate unless headers.frozen?
+      headers['date'] = now.httpdate unless headers.frozen?
       now
     end
 
     # The age of the response.
     def age
-      (headers['Age'] ||  [(now - date).to_i, 0].max).to_i
+      (headers['age'] ||  [(now - date).to_i, 0].max).to_i
     end
 
     # The number of seconds after the time specified in the response's Date
@@ -165,15 +165,15 @@ module Rack::Cache
            (expires && (expires - date))
     end
 
-    # The value of the Expires header as a Time object.
+    # The value of the expires header as a Time object.
     def expires
-      headers['Expires'] && Time.httpdate(headers['Expires'])
+      headers['expires'] && Time.httpdate(headers['expires'])
     rescue ArgumentError
       nil
     end
 
     # The number of seconds after which the response should no longer
-    # be considered fresh. Sets the Cache-Control max-age directive.
+    # be considered fresh. Sets the cache-control max-age directive.
     def max_age=(value)
       self.cache_control = cache_control.merge('max-age' => value.to_s)
     end
@@ -199,39 +199,39 @@ module Rack::Cache
     end
 
     # Set the response's time-to-live for shared caches to the specified number
-    # of seconds. This adjusts the Cache-Control/s-maxage directive.
+    # of seconds. This adjusts the cache-control/s-maxage directive.
     def ttl=(seconds)
       self.shared_max_age = age + seconds
     end
 
     # Set the response's time-to-live for private/client caches. This adjusts
-    # the Cache-Control/max-age directive.
+    # the cache-control/max-age directive.
     def client_ttl=(seconds)
       self.max_age = age + seconds
     end
 
-    # The String value of the Last-Modified header exactly as it appears
+    # The String value of the last-modified header exactly as it appears
     # in the response (i.e., no date parsing / conversion is performed).
     def last_modified
-      headers['Last-Modified']
+      headers['last-modified']
     end
 
-    # The literal value of ETag HTTP header or nil if no ETag is specified.
+    # The literal value of etag HTTP header or nil if no etag is specified.
     def etag
-      headers['ETag']
+      headers['etag']
     end
 
     # Headers that MUST NOT be included with 304 Not Modified responses.
     #
     # http://tools.ietf.org/html/rfc2616#section-10.3.5
     NOT_MODIFIED_OMIT_HEADERS = %w[
-      Allow
-      Content-Encoding
-      Content-Language
-      Content-Length
-      Content-MD5
-      Content-Type
-      Last-Modified
+      allow
+      content-encoding
+      content-language
+      content-length
+      content-md5
+      content-type
+      last-modified
     ].to_set
 
     # Modify the response so that it conforms to the rules defined for
@@ -247,20 +247,20 @@ module Rack::Cache
       nil
     end
 
-    # The literal value of the Vary header, or nil when no header is present.
+    # The literal value of the vary header, or nil when no header is present.
     def vary
-      headers['Vary']
+      headers['vary']
     end
 
-    # Does the response include a Vary header?
+    # Does the response include a vary header?
     def vary?
       ! vary.nil?
     end
 
-    # An array of header names given in the Vary header or an empty
-    # array when no Vary header is present.
+    # An array of header names given in the vary header or an empty
+    # array when no vary header is present.
     def vary_header_names
-      return [] unless vary = headers['Vary']
+      return [] unless vary = headers['vary']
       vary.split(/[\s,]+/)
     end
 
