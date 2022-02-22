@@ -49,7 +49,7 @@ configuration context to write messages to the errors stream.
 
 An integer specifying the number of seconds a cached object should be considered
 "fresh" when no explicit freshness information is provided in a response.
-Explicit `Cache-Control` or `Expires` response headers always override this
+Explicit `cache-control` or `expires` response headers always override this
 value. The `default_ttl` option defaults to `0`, meaning responses without
 explicit freshness information are considered immediately "stale" and will not
 be served from cache without validation.
@@ -79,17 +79,17 @@ An array of request header names that cause the response to be treated with
 private cache control semantics. The default value is `['Authorization', 'Cookie']`.
 If any of these headers are present in the request, the response is considered
 private and will not be cached _unless_ the response is explicitly marked public
-(e.g., `Cache-Control: public`).
+(e.g., `cache-control: public`).
 
 ### `allow_reload`
 
 A boolean specifying whether reload requests sent by the client should be
 honored by the cache. When this option is enabled (`rack-cache.allow_reload`
-is `true`), requests that include a `Cache-Control: no-cache` header cause
+is `true`), requests that include a `cache-control: no-cache` header cause
 the cache to discard anything it has stored for the request and ask that the
 response be fully generated.
 
-Most browsers include a `Cache-Control: no-cache` header when the user performs
+Most browsers include a `cache-control: no-cache` header when the user performs
 a "hard refresh" (e.g., holding `Shift` while clicking the "Refresh" button).
 
 *IMPORTANT: Enabling this option globally allows all clients to break your cache.*
@@ -98,11 +98,11 @@ a "hard refresh" (e.g., holding `Shift` while clicking the "Refresh" button).
 
 A boolean specifying whether revalidate requests sent by the client should be
 honored by the cache. When this option is enabled (`rack-cache.allow_revalidate`
-is `true`), requests that include a `Cache-Control: max-age=0` header cause the
+is `true`), requests that include a `cache-control: max-age=0` header cause the
 cache to assume its copy of the response is stale, resulting in a conditional
 GET / validation request to be sent to the server.
 
-Most browsers include a `Cache-Control: max-age=0` header when the user performs
+Most browsers include a `cache-control: max-age=0` header when the user performs
 a refresh (e.g., clicking the "Refresh" button).
 
 *IMPORTANT: Enabling this option globally allows all clients to break your cache.*

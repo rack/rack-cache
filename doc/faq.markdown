@@ -36,7 +36,7 @@ approach to caching.
 
 __Rack::Cache__ takes a standards-based approach to caching that provides some
 benefits over framework-integrated systems.  It uses standard HTTP headers
-(`Expires`, `Cache-Control`, `Etag`, `Last-Modified`, etc.) to determine
+(`expires`, `cache-control`, `etag`, `last-modified`, etc.) to determine
 what/when to cache. Designing applications to support these standard HTTP
 mechanisms gives the benefit of being able to switch to a different HTTP
 cache implementation in the future.
@@ -74,9 +74,9 @@ Features
 ### Q: Does Rack::Cache support validation?
 
 Yes. Both freshness and validation-based caching is supported. A response
-will be cached if it has a freshness lifetime (e.g., `Expires` or
-`Cache-Control: max-age=N` headers) and/or includes a validator (e.g.,
-`Last-Modified` or `ETag` headers). When the cache hits and the response is
+will be cached if it has a freshness lifetime (e.g., `expires` or
+`cache-control: max-age=N` headers) and/or includes a validator (e.g.,
+`last-modified` or `etag` headers). When the cache hits and the response is
 fresh, it's delivered immediately without talking to the backend application;
 when the cache is stale, the cached response is validated using a conditional
 GET request.
@@ -103,9 +103,9 @@ own cache policy.
 Although planned, there is currently no mechanism for manually purging
 an entry stored in the cache.
 
-Note that using an `Expires` or `Cache-Control: max-age=N` header and relying on
+Note that using an `expires` or `cache-control: max-age=N` header and relying on
 manual purge to invalidate cached entry can often be implemented more simply
-using efficient validation based caching (`Last-Modified`, `Etag`). Many web
+using efficient validation based caching (`last-modified`, `etag`). Many web
 frameworks are based entirely on manual purge and do not support validation at
 the cache level.
 

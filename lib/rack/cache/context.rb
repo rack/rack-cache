@@ -76,9 +76,9 @@ module Rack::Cache
           end
         end
 
-      # log trace and set X-Rack-Cache tracing header
+      # log trace and set x-rack-cache tracing header
       trace = @trace.join(', ')
-      response.headers['X-Rack-Cache'] = trace
+      response.headers['x-rack-cache'] = trace
 
       # write log message to rack.errors
       if verbose?
@@ -113,7 +113,7 @@ module Rack::Cache
       @private_header_keys.any? { |key| @env.key?(key) }
     end
 
-    # Determine if the #response validators (ETag, Last-Modified) matches
+    # Determine if the #response validators (etag, last-modified) matches
     # a conditional value specified in #request.
     def not_modified?(response)
       last_modified = @request.env['HTTP_IF_MODIFIED_SINCE']
@@ -181,7 +181,7 @@ module Rack::Cache
         if entry
           if fresh_enough?(entry)
             record :fresh
-            entry.headers['Age'] = entry.age.to_s
+            entry.headers['age'] = entry.age.to_s
             entry
           else
             record :stale
@@ -204,7 +204,7 @@ module Rack::Cache
     rescue => e
       record :connnection_failed
       age = entry.age.to_s
-      entry.headers['Age'] = age
+      entry.headers['age'] = age
       record "Fail-over to stale cache data with age #{age} due to #{e.class.name}: #{e}"
       entry
     end
@@ -232,12 +232,12 @@ module Rack::Cache
         record :valid
 
         # Check if the response validated which is not cached here
-        etag = response.headers['ETag']
+        etag = response.headers['etag']
         return response if etag && request_etags.include?(etag) && !cached_etags.include?(etag)
 
         entry = entry.dup
-        entry.headers.delete('Date')
-        %w[Date Expires Cache-Control ETag Last-Modified].each do |name|
+        entry.headers.delete('date')
+        %w[Date expires cache-control etag last-modified].each do |name|
           next unless value = response.headers[name]
           entry.headers[name] = value
         end
@@ -287,7 +287,7 @@ module Rack::Cache
     def store(response)
       strip_ignore_headers(response)
       metastore.store(@request, response, entitystore)
-      response.headers['Age'] = response.age.to_s
+      response.headers['age'] = response.age.to_s
     rescue => e
       log_error(e)
       nil

@@ -3,8 +3,8 @@ require 'rack'
 # = HTTP Caching For Rack
 #
 # Rack::Cache is suitable as a quick, drop-in component to enable HTTP caching
-# for Rack-enabled applications that produce freshness (+Expires+, +Cache-Control+)
-# and/or validation (+Last-Modified+, +ETag+) information.
+# for Rack-enabled applications that produce freshness (+expires+, +cache-control+)
+# and/or validation (+last-modified+, +etag+) information.
 #
 # * Standards-based (RFC 2616 compliance)
 # * Freshness/expiration based caching and validation

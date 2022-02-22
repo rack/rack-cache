@@ -2,7 +2,7 @@ require_relative 'test_helper'
 require 'rack/cache/request'
 
 describe Rack::Cache::Request do
-  it 'is marked as no_cache when the Cache-Control header includes the no-cache directive' do
+  it 'is marked as no_cache when the cache-control header includes the no-cache directive' do
     request = Rack::Cache::Request.new('HTTP_CACHE_CONTROL' => 'public, no-cache')
     assert request.no_cache?
   end
