@@ -27,7 +27,7 @@ Installation
 
 Or, from a local working copy:
 
-    $ git clone git://github.com/rake/rack-cache.git
+    $ git clone https://github.com/rack/rack-cache.git
     $ rake package && sudo rake install
 
 Basic Usage
