@@ -27,7 +27,7 @@ Installation
 
 Or, from a local working copy:
 
-    $ git clone git://github.com/rtomayko/rack-cache.git
+    $ git clone git://github.com/rake/rack-cache.git
     $ rake package && sudo rake install
 
 Basic Usage
@@ -63,7 +63,7 @@ More
   * [Things Caches Do][things] - an illustrated guide to how HTTP gateway
     caches work with pointers to other useful resources on HTTP caching.
 
-  * [GitHub Repository](http://github.com/rtomayko/rack-cache/) - get your
+  * [GitHub Repository](http://github.com/rack/rack-cache/) - get your
     fork on.
 
   * [Mailing List](http://groups.google.com/group/rack-cache) - for hackers
@@ -74,7 +74,7 @@ More
   * [RDoc API Documentation](./api/) - Mostly worthless if you just want to use
     __Rack::Cache__ in your application but mildly insightful if you'd like to
     get a feel for how the system has been put together; I recommend
-    [reading the source](http://github.com/rtomayko/rack-cache/tree/master/lib/rack/cache).
+    [reading the source](http://github.com/rack/rack-cache/tree/main/lib/rack/cache).
 
 
 See Also
