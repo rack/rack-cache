@@ -16,7 +16,7 @@ and/or validation (`last-modified`, `etag`) information:
 
 For more information about Rack::Cache features and usage, see:
 
-https://rtomayko.github.com/rack-cache/
+https://rtomayko.github.io/rack-cache/
 
 Rack::Cache is not overly optimized for performance. The main goal of the
 project is to provide a portable, easy-to-configure, and standards-based
@@ -123,4 +123,4 @@ Rack::Cache::Key.query_string_ignore = proc { |k, v| k =~ /^(trk|utm)_/ }
 ```
 
 License: MIT<br/>
-[![Build Status](https://travis-ci.org/rtomayko/rack-cache.svg)](https://travis-ci.org/rtomayko/rack-cache)
+[![Development](https://github.com/rack/rack-cache/actions/workflows/development.yml/badge.svg)](https://github.com/rack/rack-cache/actions/workflows/development.yml)

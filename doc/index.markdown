@@ -16,7 +16,7 @@ News
     [`CHANGES`](http://github.com/rtomayko/rack-cache/blob/1.0/CHANGES) file
     for details.
   * [How to use Rack::Cache with Rails 2.3](http://snippets.aktagon.com/snippets/302-How-to-setup-and-use-Rack-Cache-with-Rails-2-3-0-RC-1) - it's really easy.
-  * [RailsLab's Advanced HTTP Caching Screencast](http://railslab.newrelic.com/2009/02/26/episode-11-advanced-http-caching)
+  * [RailsLab's Advanced HTTP Caching Screencast](https://youtu.be/2UvpMhzkktw)
     is a really great review of HTTP caching concepts and shows how to
     use Rack::Cache with Rails.
 
@@ -27,7 +27,7 @@ Installation
 
 Or, from a local working copy:
 
-    $ git clone git://github.com/rtomayko/rack-cache.git
+    $ git clone https://github.com/rack/rack-cache.git
     $ rake package && sudo rake install
 
 Basic Usage
@@ -63,7 +63,7 @@ More
   * [Things Caches Do][things] - an illustrated guide to how HTTP gateway
     caches work with pointers to other useful resources on HTTP caching.
 
-  * [GitHub Repository](http://github.com/rtomayko/rack-cache/) - get your
+  * [GitHub Repository](http://github.com/rack/rack-cache/) - get your
     fork on.
 
   * [Mailing List](http://groups.google.com/group/rack-cache) - for hackers
@@ -74,7 +74,7 @@ More
   * [RDoc API Documentation](./api/) - Mostly worthless if you just want to use
     __Rack::Cache__ in your application but mildly insightful if you'd like to
     get a feel for how the system has been put together; I recommend
-    [reading the source](http://github.com/rtomayko/rack-cache/tree/master/lib/rack/cache).
+    [reading the source](http://github.com/rack/rack-cache/tree/main/lib/rack/cache).
 
 
 See Also
@@ -88,7 +88,7 @@ point for exploring the basic concepts of HTTP caching:
     especially the short section on
     [How Web Caches Work](http://www.mnot.net/cache_docs/#WORK)
 
-  * Joe Gregorio's [Doing HTTP Caching Right](http://www.xml.com/lpt/a/1642)
+  * Joe Gregorio's [Doing HTTP Caching Right](https://www.xml.com/pub/a/2006/02/01/doing-http-caching-right-introducing-httplib2.html)
 
   * [RFC 2616](http://www.ietf.org/rfc/rfc2616.txt), especially
     [Section 13, "Caching in HTTP"](http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html)

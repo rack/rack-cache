@@ -19,6 +19,6 @@ Gem::Specification.new 'rack-cache', '1.13.0' do |s|
   s.add_development_dependency 'rake'
 
   s.license = "MIT"
-  s.homepage = "https://github.com/rtomayko/rack-cache"
+  s.homepage = "https://github.com/rack/rack-cache"
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Rack::Cache", "--main", "Rack::Cache"]
 end
