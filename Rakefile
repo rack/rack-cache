@@ -22,22 +22,17 @@ end
 desc 'Build all documentation'
 task :doc => %w[doc:api doc:markdown]
 
-# requires the hanna gem:
-#   gem install mislav-hanna --source=http://gems.github.com
 desc 'Build API documentation (doc/api)'
 task 'doc:api' => 'doc/api/index.html'
 file 'doc/api/index.html' => FileList['lib/**/*.rb'] do |f|
   rm_rf 'doc/api'
   sh((<<-SH).gsub(/[\s\n]+/, ' ').strip)
-  hanna
+  rdoc
     --op doc/api
-    --promiscuous
     --charset utf8
-    --fmt html
-    --inline-source
+    --fmt hanna
     --line-numbers
-    --accessor option_accessor=RW
-    --main Rack::Cache
+    --main cache.rb
     --title 'Rack::Cache API Documentation'
     #{f.prerequisites.join(' ')}
   SH
