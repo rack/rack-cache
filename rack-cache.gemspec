@@ -17,6 +17,9 @@ Gem::Specification.new 'rack-cache', '1.13.0' do |s|
   s.add_development_dependency 'dalli'
   s.add_development_dependency 'bump'
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'thin'
+  s.add_development_dependency 'rdiscount'
+  s.add_development_dependency 'hanna-nouveau'
 
   s.license = "MIT"
   s.homepage = "https://github.com/rack/rack-cache"
