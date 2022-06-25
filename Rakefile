@@ -63,7 +63,7 @@ task 'doc:publish' => :doc do
   sh 'rsync -avz doc/ gus@tomayko.com:/src/rack-cache'
 end
 
-desc 'Start the documentation development server (requires thin)'
+desc 'Start the documentation development server'
 task 'doc:server' do
   sh 'cd doc && thin --rackup server.ru --port 3035 start'
 end
