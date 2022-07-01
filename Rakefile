@@ -5,7 +5,7 @@ require 'bump/tasks'
 
 task :default => :test
 
-CLEAN.include %w[coverage/ doc/api tags]
+CLEAN.include %w[coverage/ doc/api doc/gh-pages tags]
 CLOBBER.include %w[dist]
 
 desc 'Run tests'
@@ -22,22 +22,17 @@ end
 desc 'Build all documentation'
 task :doc => %w[doc:api doc:markdown]
 
-# requires the hanna gem:
-#   gem install mislav-hanna --source=http://gems.github.com
 desc 'Build API documentation (doc/api)'
 task 'doc:api' => 'doc/api/index.html'
 file 'doc/api/index.html' => FileList['lib/**/*.rb'] do |f|
   rm_rf 'doc/api'
   sh((<<-SH).gsub(/[\s\n]+/, ' ').strip)
-  hanna
+  rdoc
     --op doc/api
-    --promiscuous
     --charset utf8
-    --fmt html
-    --inline-source
+    --fmt hanna
     --line-numbers
-    --accessor option_accessor=RW
-    --main Rack::Cache
+    --main cache.rb
     --title 'Rack::Cache API Documentation'
     #{f.prerequisites.join(' ')}
   SH
@@ -63,12 +58,17 @@ FileList['doc/*.markdown'].each do |source|
   CLEAN.include dest
 end
 
-desc 'Publish documentation'
-task 'doc:publish' => :doc do
-  sh 'rsync -avz doc/ gus@tomayko.com:/src/rack-cache'
+desc 'Move documentation to directory for github pages'
+task 'doc:gh-pages' => [:clean, :doc] do
+  html_files = FileList['doc/*.markdown'].map { |file| file.gsub('.markdown', '.html')}
+  css_files = FileList['doc/*.css']
+
+  FileUtils.mkdir('doc/gh-pages')
+  FileUtils.cp_r('doc/api/', 'doc/gh-pages/api')
+  FileUtils.cp([*html_files, *css_files], 'doc/gh-pages')
 end
 
-desc 'Start the documentation development server (requires thin)'
+desc 'Start the documentation development server'
 task 'doc:server' do
   sh 'cd doc && thin --rackup server.ru --port 3035 start'
 end
