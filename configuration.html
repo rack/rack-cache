@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta http-equiv='content-type' content='text/html;charset=utf-8'>
+    <title>Rack::Cache</title>
+    <link rel='stylesheet' href='rack-cache.css' type='text/css' media='all'>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='header'>
+        <h1><a href="./">rack-cache</a></h1>
+        <p>
+          <a href="./configuration" title='Configuration Language Documentation'>Config</a> |
+          <a href="./storage" title='Cache Storage Documentation'>Storage</a> |
+          <a href="http://tomayko.com/writings/things-caches-do" title="Things Caches Do">Things</a> |
+          <a href="./faq" title='Frequently Asked Questions'>FAQ</a> |
+          <a href="./api/" title='Fucking Sucks.'>RDoc</a>
+        </p>
+      </div>
+      <div id='content'><h1>Configuration</h1>
+
+<p><strong>Rack::Cache</strong> includes a configuration system that can be used to specify
+fairly sophisticated cache policy on a global or per-request basis.</p>
+
+<p><a id='setopt'></a></p>
+
+<h2>Setting Cache Options</h2>
+
+<p>Cache options can be set when the <strong>Rack::Cache</strong> object is created,
+or by setting a <code>rack-cache.&lt;option&gt;</code> variable in <strong>Rack</strong>&rsquo;s
+<strong>Environment</strong>.</p>
+
+<p>When the <strong>Rack::Cache</strong> object is instantiated:</p>
+
+<pre><code>use Rack::Cache,
+  :verbose     =&gt; true,
+  :metastore   =&gt; 'memcached://localhost:11211/',
+  :entitystore =&gt; 'file:/var/cache/rack'
+</code></pre>
+
+<p>Using <strong>Rack</strong>&rsquo;s <strong>Environment</strong>:</p>
+
+<pre><code>env.merge!(
+  'rack-cache.verbose' =&gt; true,
+  'rack-cache.metastore' =&gt; 'memcached://localhost:11211/',
+  'rack-cache.entitystore' =&gt; 'file:/var/cache/rack'
+)
+</code></pre>
+
+<p><a id='options'></a></p>
+
+<h2>Cache Option Reference</h2>
+
+<p>Use the following options to customize <strong>Rack::Cache</strong>:</p>
+
+<h3><code>verbose</code></h3>
+
+<p>Boolean specifying whether verbose trace logging is enabled. This option is
+currently enabled (<code>true</code>) by default but is likely to be disabled (<code>false</code>) in
+a future release. All log output is written to the <code>rack.errors</code> stream, which
+is typically set to <code>STDERR</code>.</p>
+
+<p>The <code>trace</code>, <code>info</code>, <code>warn</code>, and <code>error</code> methods can be used within the
+configuration context to write messages to the errors stream.</p>
+
+<h3><code>default_ttl</code></h3>
+
+<p>An integer specifying the number of seconds a cached object should be considered
+&ldquo;fresh&rdquo; when no explicit freshness information is provided in a response.
+Explicit <code>cache-control</code> or <code>expires</code> response headers always override this
+value. The <code>default_ttl</code> option defaults to <code>0</code>, meaning responses without
+explicit freshness information are considered immediately &ldquo;stale&rdquo; and will not
+be served from cache without validation.</p>
+
+<h3><code>metastore</code></h3>
+
+<p>A URI specifying the <strong>MetaStore</strong> implementation used to store request/response
+meta information. See the <a href="storage.html">Rack::Cache Storage Documentation</a>
+for detailed information on different storage implementations.</p>
+
+<p>If no metastore is specified, the <code>heap:/</code> store is assumed. This implementation
+has significant draw-backs so explicit configuration is recommended.</p>
+
+<h3><code>entitystore</code></h3>
+
+<p>A URI specifying the <strong>EntityStore</strong> implementation used to store
+response bodies. See the <a href="storage.html">Rack::Cache Storage Documentation</a>
+for detailed information on different storage implementations.</p>
+
+<p>If no entitystore is specified, the <code>heap:/</code> store is assumed. This
+implementation has significant draw-backs so explicit configuration is
+recommended.</p>
+
+<h3><code>private_headers</code></h3>
+
+<p>An array of request header names that cause the response to be treated with
+private cache control semantics. The default value is <code>['Authorization', 'Cookie']</code>.
+If any of these headers are present in the request, the response is considered
+private and will not be cached <em>unless</em> the response is explicitly marked public
+(e.g., <code>cache-control: public</code>).</p>
+
+<h3><code>allow_reload</code></h3>
+
+<p>A boolean specifying whether reload requests sent by the client should be
+honored by the cache. When this option is enabled (<code>rack-cache.allow_reload</code>
+is <code>true</code>), requests that include a <code>cache-control: no-cache</code> header cause
+the cache to discard anything it has stored for the request and ask that the
+response be fully generated.</p>
+
+<p>Most browsers include a <code>cache-control: no-cache</code> header when the user performs
+a &ldquo;hard refresh&rdquo; (e.g., holding <code>Shift</code> while clicking the &ldquo;Refresh&rdquo; button).</p>
+
+<p><em>IMPORTANT: Enabling this option globally allows all clients to break your cache.</em></p>
+
+<h3><code>allow_revalidate</code></h3>
+
+<p>A boolean specifying whether revalidate requests sent by the client should be
+honored by the cache. When this option is enabled (<code>rack-cache.allow_revalidate</code>
+is <code>true</code>), requests that include a <code>cache-control: max-age=0</code> header cause the
+cache to assume its copy of the response is stale, resulting in a conditional
+GET / validation request to be sent to the server.</p>
+
+<p>Most browsers include a <code>cache-control: max-age=0</code> header when the user performs
+a refresh (e.g., clicking the &ldquo;Refresh&rdquo; button).</p>
+
+<p><em>IMPORTANT: Enabling this option globally allows all clients to break your cache.</em></p>
+
+<h3><code>cache_key</code></h3>
+
+<p>A custom cache key generator, which can be anything that responds to :call.
+By default, this is the <code>Rack::Cache::Key</code> class, but you can implement your own
+generator. A cache key generator gets passed a <code>Rack::Request</code> object and generates
+the appropriate cache key.</p>
+
+<p>The <code>Rack::Cache::Key</code> class by default returns the fully qualified url of the request.</p>
+
+<p>If you&rsquo;re using <code>Rack::Cache::Key</code> and would like to omit parts of the query string
+from the key (e.g. tracking with UTM parameters), you can set a <code>Proc</code> on
+<code>Rack::Cache::Key</code> like so:</p>
+
+<p>  Rack::Cache::Key.query_string_ignore = proc { |k, v| k =~ /^(trk|utm)_/ }</p>
+
+<p>In addition to setting the generator to an object, you can just pass a block instead,
+which will act as the cache key generator:</p>
+
+<pre><code>set :cache_key do |request|
+    request.fullpath.replace(/\//, '-')
+end
+</code></pre>
+
+<p>For more options see the <a href="http://rack.rubyforge.org/doc/classes/Rack/Request.html">Rack::Request documentation</a></p>
+
+<h3><code>use_native_ttl</code></h3>
+
+<p>Passes on the expiration timestamp to cache stores that support it, like
+Memcache and Redis. This may be necessary with some stores to keep them from
+filling up, e.g. if using a Redis backend and the <code>volatile-ttl</code> expiration
+policy.</p>
+
+<p>If using <code>memcached</code>, it will speed up misses slightly as the middleware won&rsquo;t
+need to fetch metadata and check timestamps.</p>
+
+<h3><code>fault_tolerant</code></h3>
+
+<p>Boolean specifying whether fault tolerant caching is enabled. When this option
+is enabled (<code>rack-cache.fault_tolerant</code>is <code>true</code>), stale cached results can be
+returned if the downstream service is unavailable.</p>
+</div>
+      <div id='footer'>
+        <p class='rights'>
+          Copyright
+          <a href="./license" rel="license">&copy;</a>
+          2003-2008
+          by
+          <a href='http://tomayko.com/about' rel='me author'>Ryan Tomayko</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

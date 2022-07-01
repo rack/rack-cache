@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Rack::Cache::Options</title>
+<meta content='text/html; charset=utf8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>module</span>
+Rack::Cache::Options
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/rack/cache/options_rb.html">lib/rack/cache/options.rb</a>
+</li>
+</ol>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Configuration options and utility methods for option access. <a href="../Cache.html"><code>Rack::Cache</code></a> uses the <a href="../../Rack.html"><code>Rack</code></a> Environment to store option values. All options documented below are stored in the <a href="../../Rack.html"><code>Rack</code></a> Environment as “rack-cache.&lt;option&gt;”, where &lt;option&gt; is the option name.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-option_accessor">option_accessor</a></li>
+<li><a href="#method-c-option_name">option_name</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-options">options</a></li>
+<li><a href="#method-i-options-3D">options=</a></li>
+<li><a href="#method-i-set">set</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-option_accessor'>
+<a name='method-c-option_accessor'></a>
+<div class='synopsis'>
+<span class='name'>option_accessor</span><span class='arguments'>(key)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-option_accessor-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-option_accessor-source'>   <span class="ruby-comment"># File lib/rack/cache/options.rb</span>
+<span class="line-num">13</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">option_accessor</span>(<span class="ruby-identifier">key</span>)
+<span class="line-num">14</span>   <span class="ruby-identifier">name</span> = <span class="ruby-identifier">option_name</span>(<span class="ruby-identifier">key</span>)
+<span class="line-num">15</span>   <span class="ruby-identifier">define_method</span>(<span class="ruby-identifier">key</span>) { <span class="ruby-operator">|</span><span class="ruby-operator">|</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">name</span>] }
+<span class="line-num">16</span>   <span class="ruby-identifier">define_method</span>(<span class="ruby-node">&quot;#{key}=&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">value</span> }
+<span class="line-num">17</span>   <span class="ruby-identifier">define_method</span>(<span class="ruby-node">&quot;#{key}?&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-operator">!</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">name</span>] }
+<span class="line-num">18</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-option_name'>
+<a name='method-c-option_name'></a>
+<div class='synopsis'>
+<span class='name'>option_name</span><span class='arguments'>(key)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-option_name-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-option_name-source'>   <span class="ruby-comment"># File lib/rack/cache/options.rb</span>
+<span class="line-num">20</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">option_name</span>(<span class="ruby-identifier">key</span>)
+<span class="line-num">21</span>   <span class="ruby-keyword">case</span> <span class="ruby-identifier">key</span>
+<span class="line-num">22</span>   <span class="ruby-keyword">when</span> <span class="ruby-constant">Symbol</span> ; <span class="ruby-node">&quot;rack-cache.#{key}&quot;</span>
+<span class="line-num">23</span>   <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span> ; <span class="ruby-identifier">key</span>
+<span class="line-num">24</span>   <span class="ruby-keyword">else</span> <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>
+<span class="line-num">25</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">26</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-options'>
+<a name='method-i-options'></a>
+<div class='synopsis'>
+<span class='name'>options</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>The underlying options Hash. During initialization (or outside of a request), this is a default values Hash. During a request, this is the <a href="../../Rack.html"><code>Rack</code></a> environment Hash. The default values Hash is merged in underneath the <a href="../../Rack.html"><code>Rack</code></a> environment before each request is processed.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-options-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-options-source'>    <span class="ruby-comment"># File lib/rack/cache/options.rb</span>
+<span class="line-num">118</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">options</span>
+<span class="line-num">119</span>   <span class="ruby-ivar">@env</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@default_options</span>
+<span class="line-num">120</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-options-3D'>
+<a name='method-i-options-3D'></a>
+<div class='synopsis'>
+<span class='name'>options=</span><span class='arguments'>(hash={})</span>
+
+</div>
+<div class='description'>
+
+<p>Set multiple options.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-options-3D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-options-3D-source'>    <span class="ruby-comment"># File lib/rack/cache/options.rb</span>
+<span class="line-num">123</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">options=</span>(<span class="ruby-identifier">hash</span>={})
+<span class="line-num">124</span>   <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span> <span class="ruby-identifier">write_option</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span>) }
+<span class="line-num">125</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-set'>
+<a name='method-i-set'></a>
+<div class='synopsis'>
+<span class='name'>set</span><span class='arguments'>(option, value=self, &block)</span>
+
+</div>
+<div class='description'>
+
+<p>Set an option. When <code>option</code> is a Symbol, it is set in the <a href="../../Rack.html"><code>Rack</code></a> Environment as “rack-cache.option”. When <code>option</code> is a String, it exactly as specified. The <code>option</code> argument may also be a Hash in which case each key/value pair is merged into the environment as if the <a href="Options.html#method-i-set"><code>set</code></a> method were called on each.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-set-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-set-source'>    <span class="ruby-comment"># File lib/rack/cache/options.rb</span>
+<span class="line-num">132</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">set</span>(<span class="ruby-identifier">option</span>, <span class="ruby-identifier">value</span>=<span class="ruby-keyword">self</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="line-num">133</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+<span class="line-num">134</span>     <span class="ruby-identifier">write_option</span> <span class="ruby-identifier">option</span>, <span class="ruby-identifier">block</span>
+<span class="line-num">135</span>   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>
+<span class="line-num">136</span>     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">options</span> = <span class="ruby-identifier">option</span>.<span class="ruby-identifier">to_hash</span>
+<span class="line-num">137</span>   <span class="ruby-keyword">else</span>
+<span class="line-num">138</span>     <span class="ruby-identifier">write_option</span> <span class="ruby-identifier">option</span>, <span class="ruby-identifier">value</span>
+<span class="line-num">139</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">140</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

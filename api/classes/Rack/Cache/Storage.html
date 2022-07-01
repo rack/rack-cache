@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Rack::Cache::Storage</title>
+<meta content='text/html; charset=utf8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Rack::Cache::Storage
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/rack/cache/storage_rb.html">lib/rack/cache/storage.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Object</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Maintains a collection of <a href="MetaStore.html"><code>MetaStore</code></a> and <a href="EntityStore.html"><code>EntityStore</code></a> instances keyed by URI. A single instance of this class can be used across a single process to ensure that only a single instance of a backing store is created per unique storage URI.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-instance">instance</a></li>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-clear">clear</a></li>
+<li><a href="#method-i-resolve_entitystore_uri">resolve_entitystore_uri</a></li>
+<li><a href="#method-i-resolve_metastore_uri">resolve_metastore_uri</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-instance'>
+<a name='method-c-instance'></a>
+<div class='synopsis'>
+<span class='name'>instance</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-instance-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-instance-source'>   <span class="ruby-comment"># File lib/rack/cache/storage.rb</span>
+<span class="line-num">60</span> <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">instance</span>
+<span class="line-num">61</span>   <span class="ruby-identifier">@@singleton_instance</span>
+<span class="line-num">62</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'>   <span class="ruby-comment"># File lib/rack/cache/storage.rb</span>
+<span class="line-num">12</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>
+<span class="line-num">13</span>   <span class="ruby-ivar">@metastores</span> = {}
+<span class="line-num">14</span>   <span class="ruby-ivar">@entitystores</span> = {}
+<span class="line-num">15</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-clear'>
+<a name='method-i-clear'></a>
+<div class='synopsis'>
+<span class='name'>clear</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-clear-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-clear-source'>   <span class="ruby-comment"># File lib/rack/cache/storage.rb</span>
+<span class="line-num">25</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">clear</span>
+<span class="line-num">26</span>   <span class="ruby-ivar">@metastores</span>.<span class="ruby-identifier">clear</span>
+<span class="line-num">27</span>   <span class="ruby-ivar">@entitystores</span>.<span class="ruby-identifier">clear</span>
+<span class="line-num">28</span>   <span class="ruby-keyword">nil</span>
+<span class="line-num">29</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-resolve_entitystore_uri'>
+<a name='method-i-resolve_entitystore_uri'></a>
+<div class='synopsis'>
+<span class='name'>resolve_entitystore_uri</span><span class='arguments'>(uri, options = {})</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-resolve_entitystore_uri-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-resolve_entitystore_uri-source'>   <span class="ruby-comment"># File lib/rack/cache/storage.rb</span>
+<span class="line-num">21</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">resolve_entitystore_uri</span>(<span class="ruby-identifier">uri</span>, <span class="ruby-identifier">options</span> = {})
+<span class="line-num">22</span>   <span class="ruby-ivar">@entitystores</span>[<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">to_s</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">create_store</span>(<span class="ruby-constant">EntityStore</span>, <span class="ruby-identifier">uri</span>, <span class="ruby-identifier">options</span>)
+<span class="line-num">23</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-resolve_metastore_uri'>
+<a name='method-i-resolve_metastore_uri'></a>
+<div class='synopsis'>
+<span class='name'>resolve_metastore_uri</span><span class='arguments'>(uri, options = {})</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-resolve_metastore_uri-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-resolve_metastore_uri-source'>   <span class="ruby-comment"># File lib/rack/cache/storage.rb</span>
+<span class="line-num">17</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">resolve_metastore_uri</span>(<span class="ruby-identifier">uri</span>, <span class="ruby-identifier">options</span> = {})
+<span class="line-num">18</span>   <span class="ruby-ivar">@metastores</span>[<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">to_s</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">create_store</span>(<span class="ruby-constant">MetaStore</span>, <span class="ruby-identifier">uri</span>, <span class="ruby-identifier">options</span>)
+<span class="line-num">19</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

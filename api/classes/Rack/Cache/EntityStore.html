@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Rack::Cache::EntityStore</title>
+<meta content='text/html; charset=utf8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Rack::Cache::EntityStore
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/rack/cache/entity_store_rb.html">lib/rack/cache/entity_store.rb</a>
+</li>
+<li class='other'>
+<a href="../../../files/lib/rack/cache/meta_store_rb.html">lib/rack/cache/meta_store.rb</a>
+</li>
+<li>
+<a class='show' href='#' onclick='this.parentNode.parentNode.className += &quot; expanded&quot;; this.parentNode.removeChild(this); return false'>show all</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Object</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Entity stores are used to cache response bodies across requests. All Implementations are required to calculate a SHA checksum of the data written which becomes the response body’s key.</p>
+</div>
+<div id='context'>
+</div>
+<div id='class-list'>
+<h2>Classes and Modules</h2>
+<ol>
+<li><a href="EntityStore/Disk.html">Rack::Cache::EntityStore::DISK</a></li>
+<li><a href="EntityStore/Dalli.html">Rack::Cache::EntityStore::Dalli</a></li>
+<li><a href="EntityStore/Disk.html">Rack::Cache::EntityStore::Disk</a></li>
+<li><a href="EntityStore/Disk.html">Rack::Cache::EntityStore::FILE</a></li>
+<li><a href="EntityStore/GAEStore.html">Rack::Cache::EntityStore::GAE</a></li>
+<li><a href="EntityStore/GAEStore.html">Rack::Cache::EntityStore::GAECACHE</a></li>
+<li><a href="EntityStore/GAEStore.html">Rack::Cache::EntityStore::GAEStore</a></li>
+<li><a href="EntityStore/Heap.html">Rack::Cache::EntityStore::HEAP</a></li>
+<li><a href="EntityStore/Heap.html">Rack::Cache::EntityStore::Heap</a></li>
+<li><a href="EntityStore/Heap.html">Rack::Cache::EntityStore::MEM</a></li>
+<li><a href="EntityStore/MemCacheBase.html">Rack::Cache::EntityStore::MemCacheBase</a></li>
+<li><a href="EntityStore/MemCached.html">Rack::Cache::EntityStore::MemCached</a></li>
+<li><a href="EntityStore/Noop.html">Rack::Cache::EntityStore::NOOP</a></li>
+<li><a href="EntityStore/Noop.html">Rack::Cache::EntityStore::Noop</a></li>
+</ol>
+</div>
+<div id='section'>
+<div id='constants-list'>
+<h2>Constants</h2>
+<div class='name-list'>
+<table summary='Constants'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>DISK</td>
+<td>=</td>
+<td class='context-item-value'>Disk</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>Stores entity bodies on disk at the specified path.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>FILE</td>
+<td>=</td>
+<td class='context-item-value'>Disk</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>Stores entity bodies on disk at the specified path.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>GAE</td>
+<td>=</td>
+<td class='context-item-value'>GAEStore</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>GAECACHE</td>
+<td>=</td>
+<td class='context-item-value'>GAEStore</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>HEAP</td>
+<td>=</td>
+<td class='context-item-value'>Heap</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>Stores entity bodies on the heap using a Hash object.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>MEM</td>
+<td>=</td>
+<td class='context-item-value'>Heap</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p>Stores entity bodies on the heap using a Hash object.</p>
+</td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>MEMCACHE</td>
+<td>=</td>
+<td class='context-item-value'>if defined?(::Memcached)
+MemCached
+else
+Dalli
+end</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>MEMCACHED</td>
+<td>=</td>
+<td class='context-item-value'>MEMCACHE</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>NOOP</td>
+<td>=</td>
+<td class='context-item-value'>Noop</td>
+<td>&nbsp;</td>
+<td class='context-item-desc'>
+<p><a href="EntityStore/Noop.html"><code>Noop</code></a> Entity Store backend.</p>
+
+<p>Set ‘entitystore` to ’noop:/‘. Does not persist response bodies (no disk/memory used). Responses from the cache will have an empty body. Clients must ignore these empty cached response (check for x-rack-cache response header). Atm cannot handle streamed responses, patch needed.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

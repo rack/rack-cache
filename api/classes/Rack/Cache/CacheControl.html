@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Rack::Cache::CacheControl</title>
+<meta content='text/html; charset=utf8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Rack::Cache::CacheControl
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/rack/cache/cache_control_rb.html">lib/rack/cache/cache_control.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Hash</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Parses a cache-control header and exposes the directives as a Hash. Directives that do not have values are set to <code>true</code>.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-new">new</a></li>
+</ol>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-max_age">max_age</a></li>
+<li><a href="#method-i-must_revalidate-3F">must_revalidate?</a></li>
+<li><a href="#method-i-no_cache-3F">no_cache?</a></li>
+<li><a href="#method-i-no_store-3F">no_store?</a></li>
+<li><a href="#method-i-private-3F">private?</a></li>
+<li><a href="#method-i-proxy_revalidate-3F">proxy_revalidate?</a></li>
+<li><a href="#method-i-public-3F">public?</a></li>
+<li><a href="#method-i-reverse_max_age">reverse_max_age</a></li>
+<li><a href="#method-i-shared_max_age">shared_max_age</a></li>
+<li><a href="#method-i-to_s">to_s</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='aliases-list'>
+<h2>Public Instance Aliases</h2>
+<div class='name-list'>
+<table summary='Public Instance Aliases'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>r_maxage</td>
+<td>-&gt;</td>
+<td class='context-item-value'><a href="#method-i-reverse_max_age">reverse_max_age</a></td>
+</tr>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>s_maxage</td>
+<td>-&gt;</td>
+<td class='context-item-value'><a href="#method-i-shared_max_age">shared_max_age</a></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-new'>
+<a name='method-c-new'></a>
+<div class='synopsis'>
+<span class='name'>new</span><span class='arguments'>(value=nil)</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-new-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-new-source'>  <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">7</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-identifier">value</span>=<span class="ruby-keyword">nil</span>)
+<span class="line-num">8</span>   <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">value</span>)
+<span class="line-num">9</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-max_age'>
+<a name='method-i-max_age'></a>
+<div class='synopsis'>
+<span class='name'>max_age</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>The expiration time of an entity MAY be specified by the origin server using the expires header (see section 14.21). Alternatively, it MAY be specified using the max-age directive in a response. When the max-age cache-control directive is present in a cached response, the response is stale if its current age is greater than the age value given (in seconds) at the time of a new request for that resource. The max-age directive on a response implies that the response is cacheable (i.e., “public”) unless some other, more restrictive cache directive is also present.</p>
+
+<p>If a response includes both an expires header and a max-age directive, the max-age directive overrides the expires header, even if the expires header is more restrictive. This rule allows an origin server to provide, for a given response, a longer expiration time to an HTTP/1.1 (or later) cache than to an HTTP/1.0 cache. This might be useful if certain HTTP/1.0 caches improperly calculate ages or expiration times, perhaps due to desynchronized clocks.</p>
+
+<p>Many HTTP/1.0 cache implementations will treat an expires value that is less than or equal to the response Date value as being equivalent to the cache-control response directive “no-cache”. If an HTTP/1.1 cache receives such a response, and the response does not include a cache-control header field, it SHOULD consider the response to be non-cacheable in order to retain compatibility with HTTP/1.0 servers.</p>
+
+<p>When the max-age directive is included in the request, it indicates that the client is willing to accept a response whose age is no greater than the specified time in seconds.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-max_age-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-max_age-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">110</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">max_age</span>
+<span class="line-num">111</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;max-age&#39;</span>].<span class="ruby-identifier">to_i</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">key?</span>(<span class="ruby-string">&#39;max-age&#39;</span>)
+<span class="line-num">112</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-must_revalidate-3F'>
+<a name='method-i-must_revalidate-3F'></a>
+<div class='synopsis'>
+<span class='name'>must_revalidate?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Because a cache MAY be configured to ignore a server’s specified expiration time, and because a client request MAY include a max- stale directive (which has a similar effect), the protocol also includes a mechanism for the origin server to require revalidation of a cache entry on any subsequent use. When the must-revalidate directive is present in a response received by a cache, that cache MUST NOT use the entry after it becomes stale to respond to a subsequent request without first revalidating it with the origin server. (I.e., the cache MUST do an end-to-end revalidation every time, if, based solely on the origin server’s expires or max-age value, the cached response is stale.)</p>
+
+<p>The must-revalidate directive is necessary to support reliable operation for certain protocol features. In all circumstances an HTTP/1.1 cache MUST obey the must-revalidate directive; in particular, if the cache cannot reach the origin server for any reason, it MUST generate a 504 (Gateway Timeout) response.</p>
+
+<p>Servers SHOULD send the must-revalidate directive if and only if failure to revalidate a request on the entity could result in incorrect operation, such as a silently unexecuted financial transaction. Recipients MUST NOT take any automated action that violates this directive, and MUST NOT automatically provide an unvalidated copy of the entity if revalidation fails.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-must_revalidate-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-must_revalidate-3F-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">166</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">must_revalidate?</span>
+<span class="line-num">167</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;must-revalidate&#39;</span>]
+<span class="line-num">168</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-no_cache-3F'>
+<a name='method-i-no_cache-3F'></a>
+<div class='synopsis'>
+<span class='name'>no_cache?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>When set in a response, a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server. This allows an origin server to prevent caching even by caches that have been configured to return stale responses to client requests.</p>
+
+<p>Note that this does not necessary imply that the response may not be stored by the cache, only that the cache cannot serve it without first making a conditional GET request with the origin server.</p>
+
+<p>When set in a request, the server MUST NOT use a cached copy for its response. This has quite different semantics compared to the no-cache directive on responses. When the client specifies no-cache, it causes an end-to-end reload, forcing each cache to update their cached copies.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-no_cache-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-no_cache-3F-source'>   <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">49</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">no_cache?</span>
+<span class="line-num">50</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;no-cache&#39;</span>]
+<span class="line-num">51</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-no_store-3F'>
+<a name='method-i-no_store-3F'></a>
+<div class='synopsis'>
+<span class='name'>no_store?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Indicates that the response MUST NOT be stored under any circumstances.</p>
+
+<p>The purpose of the no-store directive is to prevent the inadvertent release or retention of sensitive information (for example, on backup tapes). The no-store directive applies to the entire message, and MAY be sent either in a response or in a request. If sent in a request, a cache MUST NOT store any part of either this request or any response to it. If sent in a response, a cache MUST NOT store any part of either this response or the request that elicited it. This directive applies to both non- shared and shared caches. “MUST NOT store” in this context means that the cache MUST NOT intentionally store the information in non-volatile storage, and MUST make a best-effort attempt to remove the information from volatile storage as promptly as possible after forwarding it.</p>
+
+<p>The purpose of this directive is to meet the stated requirements of certain users and service authors who are concerned about accidental releases of information via unanticipated accesses to cache data structures. While the use of this directive might improve privacy in some cases, we caution that it is NOT in any way a reliable or sufficient mechanism for ensuring privacy. In particular, malicious or compromised caches might not recognize or obey this directive, and communications networks might be vulnerable to eavesdropping.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-no_store-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-no_store-3F-source'>   <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">78</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">no_store?</span>
+<span class="line-num">79</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;no-store&#39;</span>]
+<span class="line-num">80</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-private-3F'>
+<a name='method-i-private-3F'></a>
+<div class='synopsis'>
+<span class='name'>private?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Indicates that all or part of the response message is intended for a single user and MUST NOT be cached by a shared cache. This allows an origin server to state that the specified parts of the response are intended for only one user and are not a valid response for requests by other users. A private (non-shared) cache MAY cache the response.</p>
+
+<p>Note: This usage of the word private only controls where the response may be cached, and cannot ensure the privacy of the message content.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-private-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-private-3F-source'>   <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">32</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">private?</span>
+<span class="line-num">33</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;private&#39;</span>]
+<span class="line-num">34</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-proxy_revalidate-3F'>
+<a name='method-i-proxy_revalidate-3F'></a>
+<div class='synopsis'>
+<span class='name'>proxy_revalidate?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>The proxy-revalidate directive has the same meaning as the must- revalidate directive, except that it does not apply to non-shared user agent caches. It can be used on a response to an authenticated request to permit the user’s cache to store and later return the response without needing to revalidate it (since it has already been authenticated once by that user), while still requiring proxies that service many users to revalidate each time (in order to make sure that each user has been authenticated). Note that such authenticated responses also need the public cache control directive in order to allow them to be cached at all.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-proxy_revalidate-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-proxy_revalidate-3F-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">180</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">proxy_revalidate?</span>
+<span class="line-num">181</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;proxy-revalidate&#39;</span>]
+<span class="line-num">182</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-public-3F'>
+<a name='method-i-public-3F'></a>
+<div class='synopsis'>
+<span class='name'>public?</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Indicates that the response MAY be cached by any cache, even if it would normally be non-cacheable or cacheable only within a non- shared cache.</p>
+
+<p>A response may be considered public without this directive if the private directive is not set and the request does not include an Authorization header.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-public-3F-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-public-3F-source'>   <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">18</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">public?</span>
+<span class="line-num">19</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;public&#39;</span>]
+<span class="line-num">20</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-reverse_max_age'>
+<a name='method-i-reverse_max_age'></a>
+<div class='synopsis'>
+<span class='name'>reverse_max_age</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>If a response includes a r-maxage directive, then for a reverse cache (but not for a private or proxy cache), the maximum age specified by this directive overrides the maximum age specified by either the max-age directive, the s-maxage directive, or the expires header. The r-maxage directive also implies the semantics of the proxy-revalidate directive. i.e., that the reverse cache must not use the entry after it becomes stale to respond to a subsequent request without first revalidating it with the origin server. The r-maxage directive is always ignored by private and proxy caches.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-reverse_max_age-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-reverse_max_age-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">137</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reverse_max_age</span>
+<span class="line-num">138</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;r-maxage&#39;</span>].<span class="ruby-identifier">to_i</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">key?</span>(<span class="ruby-string">&#39;r-maxage&#39;</span>)
+<span class="line-num">139</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-shared_max_age'>
+<a name='method-i-shared_max_age'></a>
+<div class='synopsis'>
+<span class='name'>shared_max_age</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>If a response includes an s-maxage directive, then for a shared cache (but not for a private cache), the maximum age specified by this directive overrides the maximum age specified by either the max-age directive or the expires header. The s-maxage directive also implies the semantics of the proxy-revalidate directive. i.e., that the shared cache must not use the entry after it becomes stale to respond to a subsequent request without first revalidating it with the origin server. The s-maxage directive is always ignored by a private cache.</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-shared_max_age-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-shared_max_age-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">123</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">shared_max_age</span>
+<span class="line-num">124</span>   <span class="ruby-keyword">self</span>[<span class="ruby-string">&#39;s-maxage&#39;</span>].<span class="ruby-identifier">to_i</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">key?</span>(<span class="ruby-string">&#39;s-maxage&#39;</span>)
+<span class="line-num">125</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-to_s'>
+<a name='method-i-to_s'></a>
+<div class='synopsis'>
+<span class='name'>to_s</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-to_s-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-to_s-source'>    <span class="ruby-comment"># File lib/rack/cache/cache_control.rb</span>
+<span class="line-num">184</span> <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_s</span>
+<span class="line-num">185</span>   <span class="ruby-identifier">bools</span>, <span class="ruby-identifier">vals</span> = [], []
+<span class="line-num">186</span>   <span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+<span class="line-num">187</span>     <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+<span class="line-num">188</span>       <span class="ruby-identifier">bools</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">key</span>
+<span class="line-num">189</span>     <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">value</span>
+<span class="line-num">190</span>       <span class="ruby-identifier">vals</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{key}=#{value}&quot;</span>
+<span class="line-num">191</span>     <span class="ruby-keyword">end</span>
+<span class="line-num">192</span>   <span class="ruby-keyword">end</span>
+<span class="line-num">193</span>   (<span class="ruby-identifier">bools</span>.<span class="ruby-identifier">sort</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">vals</span>.<span class="ruby-identifier">sort</span>).<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>)
+<span class="line-num">194</span> <span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>
