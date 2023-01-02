@@ -7,7 +7,7 @@ require 'stringio'
 
 require 'maxitest/global_must'
 require 'maxitest/autorun'
-require 'mocha/setup'
+require 'mocha/minitest'
 
 # Set the MEMCACHED environment variable as follows to enable testing
 # of the MemCached meta and entity stores.
