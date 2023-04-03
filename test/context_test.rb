@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'timeout'
 require 'rack/cache/context'
 
 describe Rack::Cache::Context do
