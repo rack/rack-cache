@@ -129,7 +129,7 @@ which will act as the cache key generator:
 		request.fullpath.replace(/\//, '-')
 	end
 
-For more options see the [Rack::Request documentation](http://rack.rubyforge.org/doc/classes/Rack/Request.html)
+For more options see the [Rack::Request documentation](https://www.rubydoc.info/gems/rack/Rack/Request).
 
 ### `use_native_ttl`
 
