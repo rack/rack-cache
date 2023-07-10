@@ -114,7 +114,7 @@ and is provided under [the MIT license](./license)
 [s13]: http://tools.ietf.org/html/rfc2616#section-13
   "RFC 2616 / Section 13 Caching in HTTP"
 
-[rack]: http://rack.rubyforge.org/
+[rack]: https://github.com/rack/rack
   "Rack: a Ruby Webserver Interface"
 
 [vcl]: http://tomayko.com/man/vcl
