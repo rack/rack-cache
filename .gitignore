@@ -14,4 +14,4 @@ tags
 /doc/storage.html
 /doc/faq.html
 /doc/gh-pages
-Gemfile.lock
+gems.locked
