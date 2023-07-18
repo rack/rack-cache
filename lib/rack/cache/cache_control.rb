@@ -196,7 +196,7 @@ module Rack
     private
 
       def parse(value)
-        return  if value.nil? || value.empty?
+        return if value.nil? || value.empty?
         value.delete(' ').split(',').each do |part|
           next if part.empty?
           name, value = part.split('=', 2)

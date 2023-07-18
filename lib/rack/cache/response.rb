@@ -39,7 +39,7 @@ module Rack::Cache
     # and body.
     def initialize(status, headers, body)
       @status = status.to_i
-      @headers = Headers.new(headers)
+      @headers = Headers[headers]
       @body = body
       @now = Time.now
       @headers['date'] ||= @now.httpdate
