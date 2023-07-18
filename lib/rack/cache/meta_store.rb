@@ -91,12 +91,11 @@ module Rack::Cache
       vary = response.vary
       entries =
         read(key).reject do |env, res|
-          (vary == (res['vary'] || res['vary'])) &&
+          (vary == (res['vary'])) &&
             requests_match?(vary, env, stored_env)
         end
 
       headers = persist_response(response)
-      headers.delete('age')
       headers.delete('age')
 
       entries.unshift [stored_env, headers]
