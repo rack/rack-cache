@@ -4,21 +4,52 @@ on: [push, pull_request]
 
 jobs:
   test:
+    name: ${{matrix.ruby}} on ${{matrix.os}} (${{matrix.gemfile}})
+    runs-on: ${{matrix.os}}-latest
+    continue-on-error: ${{matrix.experimental}}
+    
     strategy:
-      fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        ruby: [2.4, 2.5, 2.6, 2.7, '3.0', 3.1, 3.2, truffleruby]
-    runs-on: ${{matrix.os}}
+        os:
+          - ubuntu
+          - macos
+        
+        ruby:
+          - "2.5"
+          - "2.6"
+          - "2.7"
+          - "3.0"
+          - "3.1"
+        
+        gemfile:
+          - gems/rack_v2.rb
+          - gems/rack_v3.rb
+        
+        experimental: [false]
+        
+        include:
+          - os: ubuntu
+            ruby: truffleruby
+            experimental: true
+          - os: ubuntu
+            ruby: jruby
+            experimental: true
+          - os: ubuntu
+            ruby: head
+            experimental: true
+    
+    env:
+      BUNDLE_GEMFILE: ${{matrix.gemfile}}
+    
     steps:
     - uses: actions/checkout@v3
 
     - name: Installing packages (ubuntu)
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu'
       run: sudo apt-get install libmemcached-dev
 
     - name: Installing packages (macos)
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos'
       run: brew install libmemcached
 
     - uses: ruby/setup-ruby@v1
