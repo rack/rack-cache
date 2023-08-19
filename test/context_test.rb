@@ -776,6 +776,30 @@ describe Rack::Cache::Context do
     cache.trace.wont_include :miss
   end
 
+  it 'includes specified additional headers from the backend in responses to the client' do
+    count = 0
+    respond_with do |req,res|
+      count += 1
+      res['ETAG'] = '"12345"'
+      res['unique-snowflake'] = '"so-special"'
+      res.status = (count == 1) ? 200 : 304
+    end
+
+    get '/', 'rack-cache.transfer_headers' => ['unique-snowflake']
+    assert app.called?
+    assert response.ok?
+    response.headers.must_include 'unique-snowflake'
+    response['unique-snowflake'].must_equal '"so-special"'
+    cache.trace.must_include :miss
+
+    get '/', 'rack-cache.transfer_headers' => ['unique-snowflake']
+    assert app.called?
+    assert response.ok?
+    response.headers.must_include 'unique-snowflake'
+    response['unique-snowflake'].must_equal '"so-special"'
+    cache.trace.must_include :valid
+  end
+
   it 'replaces cached responses when validation results in non-304 response' do
     timestamp = Time.now.httpdate
     count = 0

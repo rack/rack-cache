@@ -237,7 +237,7 @@ module Rack::Cache
 
         entry = entry.dup
         entry.headers.delete('date')
-        %w[Date expires cache-control etag last-modified].each do |name|
+        %w[Date expires cache-control etag last-modified].concat(transfer_headers).each do |name|
           next unless value = response.headers[name]
           entry.headers[name] = value
         end

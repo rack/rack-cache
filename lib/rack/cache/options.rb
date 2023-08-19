@@ -86,6 +86,13 @@ module Rack::Cache
     # Default: ['set-cookie']
     option_accessor :ignore_headers
 
+    # Set of response headers that are transferred from the backend response
+    # onto the cache entry when validating a cached entity (after receiving a
+    # 304 response from the backend) before sending it to the client.
+    #
+    # Default: []
+    option_accessor :transfer_headers
+
     # Set of request headers that trigger "private" cache-control behavior
     # on responses that don't explicitly state whether the response is
     # public or private via a cache-control directive. Applications that use
@@ -149,6 +156,7 @@ module Rack::Cache
         'rack-cache.entitystore'      => 'heap:/',
         'rack-cache.default_ttl'      => 0,
         'rack-cache.ignore_headers'   => ['set-cookie'],
+        'rack-cache.transfer_headers' => [],
         'rack-cache.private_headers'  => ['Authorization', 'Cookie'],
         'rack-cache.allow_reload'     => false,
         'rack-cache.allow_revalidate' => false,
