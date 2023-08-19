@@ -800,6 +800,34 @@ describe Rack::Cache::Context do
     cache.trace.must_include :valid
   end
 
+  it 'excludes specified headers from being cached in responses' do
+    count = 0
+    respond_with do |req,res|
+      count += 1
+      res['ETAG'] = '"12345"'
+      if count == 1
+        res['not-cached'] = '"1"'
+      end
+      res.status = (count == 1) ? 200 : 304
+    end
+
+    get '/', 'rack-cache.non_cached_headers' => ['not-cached']
+    assert app.called?
+    assert response.ok?
+    response.headers.must_include 'not-cached'
+    cache.trace.must_include :miss
+    cache.trace.must_include :store
+    cache.trace.wont_include :ignore
+
+    get '/', 'rack-cache.non_cached_headers' => ['not-cached']
+    assert app.called?
+    assert response.ok?
+    response.headers.wont_include 'not-cached'
+    cache.trace.must_include :stale
+    cache.trace.must_include :valid
+    cache.trace.must_include :store
+  end
+
   it 'replaces cached responses when validation results in non-304 response' do
     timestamp = Time.now.httpdate
     count = 0

@@ -58,7 +58,7 @@ module Rack::Cache
     # Write a cache entry to the store under the given key. Existing
     # entries are read and any that match the response are removed.
     # This method calls #write with the new list of cache entries.
-    def store(request, response, entity_store)
+    def store(request, response, entity_store, non_cached_headers = [])
       key = cache_key(request)
       stored_env = persist_request(request)
 
@@ -97,6 +97,7 @@ module Rack::Cache
 
       headers = persist_response(response)
       headers.delete('age')
+      non_cached_headers.each{ |h| headers.delete(h) }
 
       entries.unshift [stored_env, headers]
       if request.env['rack-cache.use_native_ttl'] && response.fresh?

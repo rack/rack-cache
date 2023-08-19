@@ -93,6 +93,12 @@ module Rack::Cache
     # Default: []
     option_accessor :transfer_headers
 
+    # Set of response headers that will be passed to the client when present
+    # in any responses but will not be stored in cached entries.
+    #
+    # Default: []
+    option_accessor :non_cached_headers
+
     # Set of request headers that trigger "private" cache-control behavior
     # on responses that don't explicitly state whether the response is
     # public or private via a cache-control directive. Applications that use
@@ -149,19 +155,20 @@ module Rack::Cache
   private
     def initialize_options(options={})
       @default_options = {
-        'rack-cache.cache_key'        => Key,
-        'rack-cache.verbose'          => true,
-        'rack-cache.storage'          => Rack::Cache::Storage.instance,
-        'rack-cache.metastore'        => 'heap:/',
-        'rack-cache.entitystore'      => 'heap:/',
-        'rack-cache.default_ttl'      => 0,
-        'rack-cache.ignore_headers'   => ['set-cookie'],
-        'rack-cache.transfer_headers' => [],
-        'rack-cache.private_headers'  => ['Authorization', 'Cookie'],
-        'rack-cache.allow_reload'     => false,
-        'rack-cache.allow_revalidate' => false,
-        'rack-cache.use_native_ttl'   => false,
-        'rack-cache.fault_tolerant'   => false,
+        'rack-cache.cache_key'          => Key,
+        'rack-cache.verbose'            => true,
+        'rack-cache.storage'            => Rack::Cache::Storage.instance,
+        'rack-cache.metastore'          => 'heap:/',
+        'rack-cache.entitystore'        => 'heap:/',
+        'rack-cache.default_ttl'        => 0,
+        'rack-cache.ignore_headers'     => ['set-cookie'],
+        'rack-cache.transfer_headers'   => [],
+        'rack-cache.non_cached_headers' => [],
+        'rack-cache.private_headers'    => ['Authorization', 'Cookie'],
+        'rack-cache.allow_reload'       => false,
+        'rack-cache.allow_revalidate'   => false,
+        'rack-cache.use_native_ttl'     => false,
+        'rack-cache.fault_tolerant'     => false,
       }
       self.options = options
     end
