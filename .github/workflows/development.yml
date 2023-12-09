@@ -23,6 +23,7 @@ jobs:
         
         gemfile:
           - gems/rack_v2.rb
+          - gems/rack_v2-1.rb
           - gems/rack_v3.rb
         
         experimental: [false]
