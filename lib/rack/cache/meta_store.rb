@@ -38,7 +38,8 @@ module Rack::Cache
       return nil if match.nil?
 
       _, res = match
-      if body = entity_store.open(res['x-content-digest'])
+      entity_key = res['x-content-digest']
+      if entity_key && body = entity_store.open(entity_key)
         restore_response(res, body)
       else
         # the metastore referenced an entity that doesn't exist in
