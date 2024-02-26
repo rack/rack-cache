@@ -140,7 +140,7 @@ module RackCacheMetaStoreImplementation
         # io is closed, so that file descriptors are released
         assert io.closed?
 
-        # renderd body is the same content as the cache
+        # rendered body is the same content as the cache
         @response.body.to_a.must_equal ["TEST"]
       end
 
