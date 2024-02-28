@@ -190,6 +190,19 @@ module RackCacheMetaStoreImplementation
         mock.verify
       end
 
+      it 'purges meta store entry when the entry does not contain the digest header' do
+        cache_key = store_simple_entry
+        meta_entry = @store.read(cache_key)
+        meta_entry.grep(Array).flatten.each { |h| h.is_a?(Hash) && h.delete('x-content-digest') }
+        @store.write(cache_key, meta_entry)
+        mock = Minitest::Mock.new
+        mock.expect :call, nil, [@store.cache_key(@request)]
+        @store.stub(:purge, mock) do
+          @store.lookup(@request, nil)
+        end
+        mock.verify
+      end
+
       it 'warns once if purge is not implemented' do
         store_simple_entry
         assert @response.headers['x-content-digest']
