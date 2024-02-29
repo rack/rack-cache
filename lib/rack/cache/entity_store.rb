@@ -282,13 +282,7 @@ module Rack::Cache
       end
     end
 
-    MEMCACHE =
-      if defined?(::Memcached)
-        MemCached
-      else
-        Dalli
-      end
-
+    MEMCACHE = Dalli
     MEMCACHED = MEMCACHE
 
     class GAEStore < EntityStore
