@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'maxitest'
   s.add_development_dependency 'mocha'
+  s.add_development_dependency 'mutex_m'
   s.add_development_dependency 'dalli'
   s.add_development_dependency 'bump'
   s.add_development_dependency 'rake'
