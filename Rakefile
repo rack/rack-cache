@@ -46,7 +46,6 @@ FileList['doc/*.markdown'].each do |source|
   file dest => [source, 'doc/layout.html.erb'] do |f|
     puts "markdown: #{source} -> #{dest}" if verbose
     require 'erb' unless defined? ERB
-    require 'rdiscount' unless defined? RDiscount
     template = File.read(source)
     content = Markdown.new(ERB.new(template, 0, "%<>").result(binding), :smart).to_html
     content.match("<h1>(.*)</h1>")[1] rescue ''
