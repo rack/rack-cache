@@ -237,7 +237,7 @@ module Rack::Cache
 
         entry = entry.dup
         entry.headers.delete('date')
-        %w[Date expires cache-control etag last-modified].each do |name|
+        %w[Date expires cache-control etag last-modified].concat(transfer_headers).each do |name|
           next unless value = response.headers[name]
           entry.headers[name] = value
         end
@@ -286,7 +286,7 @@ module Rack::Cache
     # Write the response to the cache.
     def store(response)
       strip_ignore_headers(response)
-      metastore.store(@request, response, entitystore)
+      metastore.store(@request, response, entitystore, non_cached_headers)
       response.headers['age'] = response.age.to_s
     rescue => e
       log_error(e)
