@@ -34,7 +34,7 @@ module Rack::Cache
 
       # find a cached entry that matches the request.
       env = request.env
-      match = entries.detect{ |req,res| requests_match?((res['vary'] || res['vary']), env, req) }
+      match = entries.detect{ |req,res| requests_match?(res['vary'], env, req) }
       return nil if match.nil?
 
       _, res = match
