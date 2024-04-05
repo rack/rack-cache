@@ -124,10 +124,8 @@ module Rack::Cache
           if response.fresh?
             response.expire!
             modified = true
-            [req, persist_response(response)]
-          else
-            [req, res]
           end
+          [req, persist_response(response)]
         end
       write key, entries if modified
     end

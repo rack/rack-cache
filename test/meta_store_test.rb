@@ -240,6 +240,21 @@ module RackCacheMetaStoreImplementation
         @store.lookup(@request, @entity_store).must_be_nil
       end
 
+      it 'does not remove response x-status with #invalidate' do
+        request = mock_request('/test', {})
+        # non-fresh response
+        response = mock_response(200, {'Expires' => (Time.now - 3600).httpdate, 'vary' => 'Foo'}, ['test'])
+        cache_key = @store.store(request, response, @entity_store)
+        # fresh response
+        response = mock_response(200, {'Expires' => (Time.now + 3600).httpdate, 'vary' => 'Bar'}, ['test'])
+        @store.store(request, response, @entity_store)
+        
+        @store.invalidate(request, @entity_store)
+        @store.read(cache_key).each do |_, res|
+          res.must_include 'x-status'
+        end
+      end
+
       it 'gracefully degrades if the cache store stops working' do
         @store = Class.new(Rack::Cache::MetaStore) do
           def purge(*args); nil end
